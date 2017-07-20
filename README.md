@@ -39,7 +39,7 @@ The module contains several functions:
 
 ```python
 import numpy as np
-import HiguchFractalDimension as hfd
+import HiguchiFractalDimension as hfd
 
 x = np.random.randn(10000)
 y = np.empty(9900)
