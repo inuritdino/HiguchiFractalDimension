@@ -17,6 +17,7 @@ def curve_length(X,opt=True):
     Input:
     
     X - input (time) series (must be 1D, to be converted into a NumPy array)
+    opt (=True) - optimized? (if libhfd.so was compiled uses the faster code).
 
     Output:
 
@@ -79,7 +80,7 @@ def lin_fit_hfd(k,L,log=True):
     Input:
 
     k - interval "times", window sizes
-    L - curve length    
+    L - curve length
     log (=True) - k and L values will be transformed to np.log2(k) and np.log2(L),
                   respectively
 
@@ -88,9 +89,9 @@ def lin_fit_hfd(k,L,log=True):
     HFD
     """
     if log:
-        return (np.polyfit(np.log2(k),np.log2(L),deg=1)[0]);
+        return (-np.polyfit(np.log2(k),np.log2(L),deg=1)[0]);
     else:
-        return (np.polyfit(k,L,deg=1)[0]);
+        return (-np.polyfit(k,L,deg=1)[0]);
 
 def hfd(X,**kwargs):
     """
