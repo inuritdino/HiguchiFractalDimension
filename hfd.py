@@ -10,7 +10,7 @@ import ctypes
 import numpy as np
 from numpy.ctypeslib import ndpointer
 
-def curve_length(X,opt=True):
+def curve_length(X,opt=True,num_k=50):
     """
     Calculate curve length <Lk> for Higuchi Fractal Dimension (HFD)
     
@@ -18,6 +18,8 @@ def curve_length(X,opt=True):
     
     X - input (time) series (must be 1D, to be converted into a NumPy array)
     opt (=True) - optimized? (if libhfd.so was compiled uses the faster code).
+    num_k - number of k values to generate (the k array is generated uniformly 
+            in log space from 2 to N//2, i.e. from minimum to maximum possible k).
 
     Output:
 
@@ -31,7 +33,7 @@ def curve_length(X,opt=True):
     N = X.size
 
     ### Get interval "time"
-    k_arr = interval_t(N)
+    k_arr = interval_t(N,num_val=num_k)
 
     ### The average length
     Lk = np.empty(k_arr.size,dtype=np.float)
