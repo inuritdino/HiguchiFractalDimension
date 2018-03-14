@@ -5,12 +5,13 @@ Higuchi Fractal Dimension according to:
 T. Higuchi, Approach to an Irregular Time Series on the
 Basis of the Fractal Theory, Physica D, 1988; 31: 277-283.
 """
+
 import os
 import ctypes
 import numpy as np
 from numpy.ctypeslib import ndpointer
 
-def curve_length(X,opt=True,num_k=50):
+def curve_length(X,opt=True,num_k=50,k_max=None):
     """
     Calculate curve length <Lk> for Higuchi Fractal Dimension (HFD)
     
@@ -18,9 +19,9 @@ def curve_length(X,opt=True,num_k=50):
     
     X - input (time) series (must be 1D, to be converted into a NumPy array)
     opt (=True) - optimized? (if libhfd.so was compiled uses the faster code).
-    num_k - number of k values to generate (the k array is generated uniformly 
-            in log space from 2 to N//2, i.e. from minimum to maximum possible k).
-
+    num_k - number of k values to generate.
+    k_max - the maximum k (the k array is generated uniformly in log space 
+            from 2 to k_max)
     Output:
 
     k - interval "times", window sizes
@@ -33,7 +34,7 @@ def curve_length(X,opt=True,num_k=50):
     N = X.size
 
     ### Get interval "time"
-    k_arr = interval_t(N,num_val=num_k)
+    k_arr = interval_t(N,num_val=num_k,kmax=k_max)
 
     ### The average length
     Lk = np.empty(k_arr.size,dtype=np.float)
@@ -110,9 +111,17 @@ def hfd(X,**kwargs):
     k, L = curve_length(X,**kwargs)
     return lin_fit_hfd(k, L);
 
-def interval_t(size,num_val=50):
+def interval_t(size,num_val=50,kmax=None):
     ### Generate sequence of interval times, k
-    k = np.logspace(start=np.log2(2),stop=np.log2(size//2),base=2,num=num_val,dtype=np.int)
+    if kmax is None:
+        k_stop = size//2
+    else:
+        k_stop = kmax
+    if k_stop > size//2:## prohibit going larger than N/2
+        k_stop = size//2
+        print("Warning: k cannot be longer than N/2")
+        
+    k = np.logspace(start=np.log2(2),stop=np.log2(k_stop),base=2,num=num_val,dtype=np.int)
     return np.unique(k);
 
 def init_lib():
