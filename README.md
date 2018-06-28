@@ -15,7 +15,7 @@ Basis of the Fractal Theory, Physica D, 1988; 31: 277-283.
 To compile the C library (assume the compiler name is `gcc`):
 
 ```bash
-gcc -shared hfd.c -o libhfd.so -lm
+gcc -shared hfd.c -o libhfd.so -lm -fPIC
 ```
 
 Keep the name for the output library `libhfd.so`: Python wrapper looks for this name.
