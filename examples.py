@@ -43,7 +43,7 @@ def apply_hfd(x,name=None):
 ### Higuchi original data: random Gaussian increments = Brownian
 N = 2**16
 z = np.random.randn(N+1000)
-x = np.empty(N,dtype=np.float)
+x = np.zeros(N)
 for i in range(N):
     x[i] = np.sum(z[:(i+1000)])
 
