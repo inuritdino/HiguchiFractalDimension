@@ -37,7 +37,7 @@ def curve_length(X,opt=True,num_k=50,k_max=None):
     k_arr = interval_t(N,num_val=num_k,kmax=k_max)
 
     ### The average length
-    Lk = np.empty(k_arr.size,dtype=np.float)
+    Lk = np.zeros(k_arr.size)
 
     ### C library
     if opt:
@@ -121,7 +121,7 @@ def interval_t(size,num_val=50,kmax=None):
         k_stop = size//2
         print("Warning: k cannot be longer than N/2")
         
-    k = np.logspace(start=np.log2(2),stop=np.log2(k_stop),base=2,num=num_val,dtype=np.int)
+    k = np.logspace(start=np.log2(2),stop=np.log2(k_stop),base=2,num=num_val,dtype=int)
     return np.unique(k);
 
 def init_lib():
